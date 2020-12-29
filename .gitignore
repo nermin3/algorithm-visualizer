@@ -11,3 +11,4 @@
 
 #files
 /.eslintcache
+*.d.ts
