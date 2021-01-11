@@ -1,0 +1,15 @@
+@import 'src/common/theme/vars';
+
+.headerRoot {
+  height: 50px;
+  width: 100%;
+  background-color: $orange;
+  color: $white;
+  display: grid;
+  grid-template-columns:repeat(10, 1fr);
+  align-items: center;
+  justify-items: center;
+  gap: 0 10px;
+  padding: 10px 0;
+  font-size: 24px;
+}

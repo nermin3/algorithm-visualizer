@@ -1,0 +1,16 @@
+.sorterViewRoot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 0 auto;
+  height: 1000px;
+  width: 90%;
+  @for $i from 0 through 99 {
+    .element#{$i} {
+      height: $i + 1%;
+      width: 1%;
+      background-color: green;
+      margin: 0 2px;
+    }
+  }
+}

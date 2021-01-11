@@ -1,0 +1,3 @@
+export enum SORTER_ALGORITHM {
+  BUBBLE_SORT,
+}
