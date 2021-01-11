@@ -29,6 +29,12 @@ export function SorterSelect(props: SorterSelectProps) {
         onChange={onSelectChange}
       >
         <MenuItem value={SORTER_ALGORITHM.BUBBLE_SORT}>Bubble sort</MenuItem>
+        <MenuItem value={SORTER_ALGORITHM.SELECTION_SORT}>
+          Selection sort
+        </MenuItem>
+        <MenuItem value={SORTER_ALGORITHM.INSERTION_SORT}>
+          Insertion sort
+        </MenuItem>
       </Select>
     </FormControl>
   );
