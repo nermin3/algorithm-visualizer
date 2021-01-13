@@ -1,6 +1,6 @@
 import './sorterView.scss';
 import { Observable } from 'rxjs';
-import { selectionSort } from '../../common/sorters';
+import { mergeSort } from '../../common/sorters';
 import { sortService } from './SortService';
 import { useEffect, useState } from 'react';
 
@@ -17,7 +17,7 @@ export function SorterView(props: SorterViewProps) {
     const subscription = sortService.arraySubject.subscribe((value) => {
       setArray([...value]);
     });
-    selectionSort(array, sortService.updateArray);
+    mergeSort(array, 0, array.length, sortService.updateArray);
     return () => subscription.unsubscribe();
   }, []);
 

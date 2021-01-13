@@ -2,6 +2,7 @@ import { onArrayChangeCallBack, sleep, switchElements } from './appUtil';
 
 // Time (in ms) the application should wait after switching array elements
 const WAIT_TIME = 5;
+const MERGE_WAIT = 20;
 /**
  * Function performs a bubble sort on given array
  * @param array array to sort
@@ -78,4 +79,81 @@ export async function selectionSort(
     updateArrayState(array);
     await sleep(WAIT_TIME);
   }
+}
+
+/**
+ * Helper function to merge sub arrays
+ * @param array main array
+ * @param start start of first sub array
+ * @param middle dividing point of sub arrays
+ * @param end end of second array
+ * @param updateArrayState state update callback
+ */
+async function mergeSubArrays(
+  array: number[],
+  start: number,
+  middle: number,
+  end: number,
+  updateArrayState: onArrayChangeCallBack<number>
+) {
+  const subArrayLeftSize = middle - start + 1;
+  const subArrayRightSize = end - middle;
+
+  const leftArray = array.slice(start, start + subArrayLeftSize);
+  const rightArray = array.slice(middle + 1, middle + 1 + subArrayRightSize);
+
+  let i = 0,
+    j = 0,
+    k = start;
+
+  while (i < subArrayLeftSize && j < subArrayRightSize) {
+    if (leftArray[i] > rightArray[j]) {
+      array[k] = leftArray[i];
+      ++i;
+    } else {
+      array[k] = rightArray[j];
+      ++j;
+    }
+    updateArrayState(array);
+    await sleep(MERGE_WAIT);
+    ++k;
+  }
+
+  while (i < subArrayLeftSize) {
+    array[k] = leftArray[i];
+    updateArrayState(array);
+    await sleep(MERGE_WAIT);
+    i++;
+    k++;
+  }
+
+  while (j < subArrayRightSize) {
+    array[k] = rightArray[j];
+    updateArrayState(array);
+    await sleep(MERGE_WAIT);
+    j++;
+    k++;
+  }
+}
+
+/**
+ * Function performs an insertion sort on given array
+ * @param array array to sort
+ * @param start start of array
+ * @param end end of array (index excluded)
+ * @param updateArrayState state update callback
+ */
+export async function mergeSort(
+  array: number[],
+  start: number,
+  end: number,
+  updateArrayState: onArrayChangeCallBack<number>
+) {
+  if (start >= end) {
+    return;
+  }
+  const middle = Math.floor((start + end) / 2);
+  await mergeSort(array, start, middle, updateArrayState);
+  await mergeSort(array, middle + 1, end, updateArrayState);
+  await mergeSubArrays(array, start, middle, end, updateArrayState);
 }
