@@ -157,3 +157,99 @@ export async function mergeSort(
   await mergeSort(array, middle + 1, end, updateArrayState);
   await mergeSubArrays(array, start, middle, end, updateArrayState);
 }
+
+/**
+ * Partition using Lomuto partition
+ * @param array array to partition
+ * @param start start index of sub array
+ * @param end end index of sub array
+ * @param updateArrayState updateArrayState state update callback
+ */
+async function lomutoPartition(
+  array: number[],
+  start: number,
+  end: number,
+  updateArrayState: onArrayChangeCallBack<number>
+): Promise<number> {
+  const pivot = array[end];
+  let pivotIndex = start - 1;
+  for (let i = start; i < end; ++i) {
+    if (array[i] <= pivot) {
+      ++pivotIndex;
+      switchElements(array, pivotIndex, i);
+      updateArrayState(array);
+      await sleep(WAIT_TIME);
+    }
+  }
+  ++pivotIndex;
+  switchElements(array, pivotIndex, end);
+  updateArrayState(array);
+  await sleep(WAIT_TIME);
+
+  return pivotIndex;
+}
+
+/**
+ * Partition using Hoare partition
+ * @param array array to partition
+ * @param start start index of sub array
+ * @param end end index of sub array
+ * @param updateArrayState updateArrayState state update callback
+ */
+async function hoarePartition(
+  array: number[],
+  start: number,
+  end: number,
+  updateArrayState: onArrayChangeCallBack<number>
+): Promise<number> {
+  const pivot = array[start];
+  let i = start - 1,
+    j = end + 1;
+
+  while (true) {
+    do {
+      i++;
+    } while (array[i] < pivot);
+
+    do {
+      j--;
+    } while (array[j] > pivot);
+
+    if (i >= j) return j;
+
+    switchElements(array, i, j);
+    updateArrayState(array);
+    await sleep(WAIT_TIME);
+  }
+}
+
+/**
+ * Function performs an quick sort on given array
+ * @param array array to sort
+ * @param start start of array
+ * @param end end of array (index excluded)
+ * @param updateArrayState state update callback
+ * @param hoare whether to use {@link hoarePartition} or {@link lomutoPartition}
+ */
+export async function quickSort(
+  array: number[],
+  start: number,
+  end: number,
+  updateArrayState: onArrayChangeCallBack<number>,
+  hoare?: boolean
+) {
+  if (start >= end) {
+    return;
+  }
+
+  const pivotIndex = (await hoare)
+    ? await hoarePartition(array, start, end, updateArrayState)
+    : await lomutoPartition(array, start, end, updateArrayState);
+  await quickSort(
+    array,
+    start,
+    hoare ? pivotIndex : pivotIndex - 1,
+    updateArrayState
+  );
+  await quickSort(array, pivotIndex + 1, end, updateArrayState);
+}
