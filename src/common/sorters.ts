@@ -253,3 +253,58 @@ export async function quickSort(
   );
   await quickSort(array, pivotIndex + 1, end, updateArrayState);
 }
+
+/**
+ * Function recursively makes a heap out of an array
+ * @param array array to heapify
+ * @param size size of array or sub array
+ * @param rootIndex root index
+ * @param updateArrayState state update callback
+ */
+async function heapify(
+  array: number[],
+  size: number,
+  rootIndex: number,
+  updateArrayState: onArrayChangeCallBack<number>
+) {
+  let largestIndex = rootIndex;
+  const left = 2 * rootIndex + 1;
+  const right = 2 * rootIndex + 2;
+
+  if (left < size && array[left] > array[largestIndex]) {
+    largestIndex = left;
+  }
+
+  if (right < size && array[right] > array[largestIndex]) {
+    largestIndex = right;
+  }
+
+  if (largestIndex !== rootIndex) {
+    switchElements(array, largestIndex, rootIndex);
+    updateArrayState(array);
+    await sleep(WAIT_TIME);
+    await heapify(array, size, largestIndex, updateArrayState);
+  }
+}
+
+/**
+ * Function performs an heap sort on given array
+ * @param array array to sort
+ * @param updateArrayState state update callback
+ */
+export async function heapSort(
+  array: number[],
+  updateArrayState: onArrayChangeCallBack<number>
+) {
+  const size = array.length;
+  for (let i = size / 2 - 1; i >= 0; --i) {
+    await heapify(array, size, i, updateArrayState);
+  }
+
+  for (let i = size - 1; i > 0; --i) {
+    switchElements(array, 0, i);
+    updateArrayState(array);
+    await sleep(WAIT_TIME);
+    await heapify(array, i, 0, updateArrayState);
+  }
+}

@@ -1,6 +1,6 @@
 import './sorterView.scss';
 import { Observable } from 'rxjs';
-import { quickSort } from '../../common/sorters';
+import { heapSort } from '../../common/sorters';
 import { sortService } from './SortService';
 import { useEffect, useState } from 'react';
 
@@ -17,7 +17,7 @@ export function SorterView(props: SorterViewProps) {
     const subscription = sortService.arraySubject.subscribe((value) => {
       setArray([...value]);
     });
-    quickSort(array, 0, array.length - 1, sortService.updateArray, true);
+    heapSort(array, sortService.updateArray);
     return () => subscription.unsubscribe();
   }, []);
 
