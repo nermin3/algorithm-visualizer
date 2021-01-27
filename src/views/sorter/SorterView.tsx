@@ -1,25 +1,27 @@
-import './sorterView.scss';
-import { Observable } from 'rxjs';
-import { heapSort } from '../../common/sorters';
-import { sortService } from './SortService';
-import { useEffect, useState } from 'react';
+import "./sorterView.scss";
+import { useEffect, useState } from "react";
+import { SorterSubMenu } from "./SorterSubMenu";
+import { SORTER_ALGORITHM } from "../../common/enums";
+import { onChangeCallBack } from "../../common/appUtil";
+import { Observable } from "rxjs";
 
 interface SorterViewProps {
+  array: number[];
+  algorithm: SORTER_ALGORITHM;
+  updateAlgorithm: onChangeCallBack<SORTER_ALGORITHM>;
   observable: Observable<number[]>;
 }
 
 export function SorterView(props: SorterViewProps) {
-  const [array, setArray] = useState<number[]>(
-    sortService.arraySubject.getValue()
-  );
+  const { array: arrayProp, algorithm, updateAlgorithm, observable } = props;
+  const [array, setArray] = useState<number[]>(arrayProp);
 
   useEffect(() => {
-    const subscription = sortService.arraySubject.subscribe((value) => {
+    const subscription = observable.subscribe((value) => {
       setArray([...value]);
     });
-    heapSort(array, sortService.updateArray);
     return () => subscription.unsubscribe();
-  }, []);
+  }, [array, observable]);
 
   if (!array) {
     return null;
@@ -27,9 +29,12 @@ export function SorterView(props: SorterViewProps) {
 
   return (
     <div className="sorterViewRoot">
-      {array.map((value, index) => (
-        <div key={index} className={'element' + value} />
-      ))}
+      <SorterSubMenu value={algorithm} onChange={updateAlgorithm} />
+      <div className="sorterVisualizer">
+        {array.map((value, index) => (
+          <div key={index} className={"element" + value} />
+        ))}
+      </div>
     </div>
   );
 }

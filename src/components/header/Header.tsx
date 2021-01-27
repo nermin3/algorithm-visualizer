@@ -1,14 +1,12 @@
 import './header.scss';
-import { SorterSelect, SorterSelectProps } from '../sorterSelect/sorterSelect';
+import { Link } from 'react-router-dom';
 
-interface HeaderProps extends SorterSelectProps {}
-
-export function Header(props: HeaderProps) {
-  const { value, onChange } = props;
+export function Header() {
   return (
     <div className="headerRoot">
       <div>Algorithm Visualizer</div>
-      <SorterSelect value={value} onChange={onChange} />
+      <Link to="sorters">Sorters</Link>
+      <Link to="path-finding">Path finding</Link>
     </div>
   );
 }

@@ -4,3 +4,10 @@ export enum SORTER_ALGORITHM {
   INSERTION_SORT,
   MERGE_SORT,
 }
+
+export enum MATRIX_MARKER {
+  START,
+  PATH,
+  WALL,
+  END,
+}

@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { onChangeCallBack } from '../../common/appUtil';
-import { SORTER_ALGORITHM } from '../../common/enums/sorterAlgorithm';
+import { SORTER_ALGORITHM } from '../../common/enums';
 import { ChangeEvent } from 'react';
 import './sortSelect.scss';
 
@@ -10,12 +10,12 @@ export interface SorterSelectProps {
 }
 
 export function SorterSelect(props: SorterSelectProps) {
-  const { value } = props;
+  const { value, onChange } = props;
 
   const onSelectChange = (
     e: ChangeEvent<{ name?: string; value: unknown }>
   ) => {
-    console.log(e.target.name);
+    onChange(e.target.value as SORTER_ALGORITHM)
   };
 
   return (

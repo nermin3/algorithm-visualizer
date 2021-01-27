@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { generateShuffledArray } from '../../common/appUtil';
-import { SORTER_ALGORITHM } from '../../common/enums/sorterAlgorithm';
+import { SORTER_ALGORITHM } from '../../common/enums';
 
 class SortStore {
   arraySubject = new BehaviorSubject<number[]>(generateShuffledArray());
