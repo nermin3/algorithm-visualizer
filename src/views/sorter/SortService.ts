@@ -1,8 +1,19 @@
 import { BehaviorSubject } from 'rxjs';
 import { sortStore } from './SortStore';
-import { generateShuffledArray, onArrayChangeCallBack, onChangeCallBack } from "../../common/appUtil";
+import {
+  generateShuffledArray,
+  onArrayChangeCallBack,
+  onChangeCallBack,
+} from '../../common/appUtil';
 import { SORTER_ALGORITHM } from '../../common/enums';
-import { bubbleSort, heapSort, insertionSort, mergeSort } from "../../common/sorters";
+import {
+  bubbleSort,
+  heapSort,
+  insertionSort,
+  mergeSort,
+  quickSort,
+  selectionSort,
+} from '../../common/sorters';
 
 class SortService {
   arraySubject = new BehaviorSubject<number[]>(
@@ -26,9 +37,9 @@ class SortService {
   updateAlgorithm: onChangeCallBack<SORTER_ALGORITHM> = (
     value: SORTER_ALGORITHM
   ) => {
-    this.algorithmSubject.next(value);
+    sortStore.algorithmSubject.next(value);
     const newArray = generateShuffledArray();
-    this.arraySubject.next(newArray);
+    sortStore.arraySubject.next(newArray);
 
     switch (value) {
       case SORTER_ALGORITHM.BUBBLE_SORT:
@@ -41,6 +52,12 @@ class SortService {
         mergeSort(newArray, this.updateArray);
         break;
       case SORTER_ALGORITHM.SELECTION_SORT:
+        selectionSort(newArray, this.updateArray);
+        break;
+      case SORTER_ALGORITHM.QUICK_SORT:
+        quickSort(newArray, this.updateArray);
+        break;
+      case SORTER_ALGORITHM.HEAP_SORT:
         heapSort(newArray, this.updateArray);
         break;
     }

@@ -1,8 +1,11 @@
 import { onArrayChangeCallBack, sleep, switchElements } from './appUtil';
+import { sortStore } from '../views/sorter/SortStore';
+import { SORTER_ALGORITHM } from './enums';
 
 // Time (in ms) the application should wait after switching array elements
 const WAIT_TIME = 5;
 const MERGE_WAIT = 20;
+
 /**
  * Function performs a bubble sort on given array
  * @param array array to sort
@@ -20,7 +23,13 @@ export async function bubbleSort(
       if (array[i] < array[i + 1]) {
         switchOccurred = true;
         switchElements(array, i, i + 1);
-        updateArrayState(array);
+        if (
+          sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.BUBBLE_SORT
+        ) {
+          updateArrayState(array);
+        } else {
+          return;
+        }
         await sleep(WAIT_TIME);
       }
     }
@@ -29,7 +38,13 @@ export async function bubbleSort(
       if (array[i] > array[i - 1]) {
         switchOccurred = true;
         switchElements(array, i, i - 1);
-        updateArrayState(array);
+        if (
+          sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.BUBBLE_SORT
+        ) {
+          updateArrayState(array);
+        } else {
+          return;
+        }
         await sleep(WAIT_TIME);
       }
     }
@@ -50,7 +65,14 @@ export async function insertionSort(
     for (let j = i; j > 0; --j) {
       if (array[j - 1] < array[j]) {
         switchElements(array, j, j - 1);
-        updateArrayState(array);
+        if (
+          sortStore.algorithmSubject.getValue() ===
+          SORTER_ALGORITHM.INSERTION_SORT
+        ) {
+          updateArrayState(array);
+        } else {
+          return;
+        }
         await sleep(WAIT_TIME);
       } else {
         break;
@@ -76,7 +98,13 @@ export async function selectionSort(
       }
     }
     switchElements(array, biggestIndex, i);
-    updateArrayState(array);
+    if (
+      sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.SELECTION_SORT
+    ) {
+      updateArrayState(array);
+    } else {
+      return;
+    }
     await sleep(WAIT_TIME);
   }
 }
@@ -114,14 +142,22 @@ async function mergeSubArrays(
       array[k] = rightArray[j];
       ++j;
     }
-    updateArrayState(array);
+    if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.MERGE_SORT) {
+      updateArrayState(array);
+    } else {
+      return;
+    }
     await sleep(MERGE_WAIT);
     ++k;
   }
 
   while (i < subArrayLeftSize) {
     array[k] = leftArray[i];
-    updateArrayState(array);
+    if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.MERGE_SORT) {
+      updateArrayState(array);
+    } else {
+      return;
+    }
     await sleep(MERGE_WAIT);
     i++;
     k++;
@@ -129,7 +165,11 @@ async function mergeSubArrays(
 
   while (j < subArrayRightSize) {
     array[k] = rightArray[j];
-    updateArrayState(array);
+    if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.MERGE_SORT) {
+      updateArrayState(array);
+    } else {
+      return;
+    }
     await sleep(MERGE_WAIT);
     j++;
     k++;
@@ -147,8 +187,7 @@ export async function mergeSort(
   array: number[],
   updateArrayState: onArrayChangeCallBack<number>,
   start = 0,
-  end = array.length,
-
+  end = array.length
 ) {
   if (start >= end) {
     return;
@@ -178,13 +217,19 @@ async function lomutoPartition(
     if (array[i] <= pivot) {
       ++pivotIndex;
       switchElements(array, pivotIndex, i);
-      updateArrayState(array);
+      if (
+        sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.QUICK_SORT
+      ) {
+        updateArrayState(array);
+      }
       await sleep(WAIT_TIME);
     }
   }
   ++pivotIndex;
   switchElements(array, pivotIndex, end);
-  updateArrayState(array);
+  if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.QUICK_SORT) {
+    updateArrayState(array);
+  }
   await sleep(WAIT_TIME);
 
   return pivotIndex;
@@ -219,7 +264,9 @@ async function hoarePartition(
     if (i >= j) return j;
 
     switchElements(array, i, j);
-    updateArrayState(array);
+    if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.QUICK_SORT) {
+      updateArrayState(array);
+    }
     await sleep(WAIT_TIME);
   }
 }
@@ -234,12 +281,15 @@ async function hoarePartition(
  */
 export async function quickSort(
   array: number[],
-  start: number,
-  end: number,
   updateArrayState: onArrayChangeCallBack<number>,
+  start = 0,
+  end = array.length,
   hoare?: boolean
 ) {
-  if (start >= end) {
+  if (
+    start >= end ||
+    sortStore.algorithmSubject.getValue() !== SORTER_ALGORITHM.QUICK_SORT
+  ) {
     return;
   }
 
@@ -248,11 +298,11 @@ export async function quickSort(
     : await lomutoPartition(array, start, end, updateArrayState);
   await quickSort(
     array,
+    updateArrayState,
     start,
-    hoare ? pivotIndex : pivotIndex - 1,
-    updateArrayState
+    hoare ? pivotIndex : pivotIndex - 1
   );
-  await quickSort(array, pivotIndex + 1, end, updateArrayState);
+  await quickSort(array, updateArrayState, pivotIndex + 1, end);
 }
 
 /**
@@ -282,7 +332,9 @@ async function heapify(
 
   if (largestIndex !== rootIndex) {
     switchElements(array, largestIndex, rootIndex);
-    updateArrayState(array);
+    if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.HEAP_SORT) {
+      updateArrayState(array);
+    }
     await sleep(WAIT_TIME);
     await heapify(array, size, largestIndex, updateArrayState);
   }
@@ -304,7 +356,11 @@ export async function heapSort(
 
   for (let i = size - 1; i > 0; --i) {
     switchElements(array, 0, i);
-    updateArrayState(array);
+    if (sortStore.algorithmSubject.getValue() === SORTER_ALGORITHM.HEAP_SORT) {
+      updateArrayState(array);
+    } else {
+      return;
+    }
     await sleep(WAIT_TIME);
     await heapify(array, i, 0, updateArrayState);
   }

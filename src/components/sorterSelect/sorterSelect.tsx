@@ -34,8 +34,10 @@ export function SorterSelect(props: SorterSelectProps) {
         </MenuItem>
         <MenuItem value={SORTER_ALGORITHM.INSERTION_SORT}>
           Insertion sort
-        </MenuItem>{' '}
+        </MenuItem>
         <MenuItem value={SORTER_ALGORITHM.MERGE_SORT}>Merge sort</MenuItem>
+        <MenuItem value={SORTER_ALGORITHM.QUICK_SORT}>Quick sort</MenuItem>
+        <MenuItem value={SORTER_ALGORITHM.HEAP_SORT}>Heap sort</MenuItem>
       </Select>
     </FormControl>
   );
