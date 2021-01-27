@@ -38,7 +38,7 @@ class SortService {
         insertionSort(newArray, this.updateArray);
         break;
       case SORTER_ALGORITHM.MERGE_SORT:
-        mergeSort(newArray, 0, newArray.length, this.updateArray);
+        mergeSort(newArray, this.updateArray);
         break;
       case SORTER_ALGORITHM.SELECTION_SORT:
         heapSort(newArray, this.updateArray);

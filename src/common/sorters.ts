@@ -145,16 +145,17 @@ async function mergeSubArrays(
  */
 export async function mergeSort(
   array: number[],
-  start: number,
-  end: number,
-  updateArrayState: onArrayChangeCallBack<number>
+  updateArrayState: onArrayChangeCallBack<number>,
+  start = 0,
+  end = array.length,
+
 ) {
   if (start >= end) {
     return;
   }
   const middle = Math.floor((start + end) / 2);
-  await mergeSort(array, start, middle, updateArrayState);
-  await mergeSort(array, middle + 1, end, updateArrayState);
+  await mergeSort(array, updateArrayState, start, middle);
+  await mergeSort(array, updateArrayState, middle + 1, end);
   await mergeSubArrays(array, start, middle, end, updateArrayState);
 }
 
