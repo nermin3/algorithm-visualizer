@@ -21,7 +21,7 @@ export function SorterView(props: SorterViewProps) {
       setArray([...value]);
     });
     return () => subscription.unsubscribe();
-  }, [array, observable]);
+  }, []);
 
   if (!array) {
     return null;
