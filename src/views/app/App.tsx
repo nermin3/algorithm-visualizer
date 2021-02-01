@@ -6,6 +6,7 @@ import './app.scss';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { PathFindingView } from '../pathFinding/PathFindingView';
+import { pathFindingService } from '../pathFinding/PathFindingService';
 
 const theme = createMuiTheme({
   overrides: {
@@ -55,7 +56,11 @@ function App() {
             />
           </Route>
           <Route exact={true} path="/path-finding">
-            <PathFindingView />
+            <PathFindingView
+              grid={pathFindingService.gridSubject.getValue()}
+              updateCell={pathFindingService.updateCell}
+              gridObservable={pathFindingService.gridSubject}
+            />
           </Route>
         </Switch>
       </MuiThemeProvider>

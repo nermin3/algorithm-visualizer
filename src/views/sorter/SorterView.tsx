@@ -1,4 +1,4 @@
-import './sorterView.scss';
+import './sorter.scss';
 import { useEffect, useState } from 'react';
 import { SorterSubMenu } from './SorterSubMenu';
 import { SORTER_ALGORITHM } from '../../common/enums';

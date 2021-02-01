@@ -16,10 +16,10 @@ import {
 } from '../../common/sorters';
 
 class SortService {
-  arraySubject = new BehaviorSubject<number[]>(
+  readonly arraySubject = new BehaviorSubject<number[]>(
     sortStore.arraySubject.getValue()
   );
-  algorithmSubject = new BehaviorSubject<SORTER_ALGORITHM>(
+  readonly algorithmSubject = new BehaviorSubject<SORTER_ALGORITHM>(
     sortStore.algorithmSubject.getValue()
   );
 

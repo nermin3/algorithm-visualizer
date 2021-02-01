@@ -1,0 +1,43 @@
+.pathFindingViewRoot {
+
+  .baseCell,
+  %base-cell {
+    border: none;
+  }
+
+  .start {
+    @extend %base-cell;
+
+    background-color: #274bf9;
+  }
+
+  .path1 {
+    @extend %base-cell;
+
+    background-color: #d3ffce;
+  }
+
+  .path2 {
+    @extend %base-cell;
+
+    background-color: #58e1ab;
+  }
+
+  .path3 {
+    @extend %base-cell;
+
+    background-color: #08c96b;
+  }
+
+  .wall {
+    @extend %base-cell;
+
+    background-color: #232600;
+  }
+
+  .end {
+    @extend %base-cell;
+
+    background-color: #18ecdc;
+  }
+}

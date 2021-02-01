@@ -1,12 +1,12 @@
 import { BehaviorSubject } from 'rxjs';
-import { MATRIX_SIZE } from './pathFindingUtil';
+import { COLUMN_SIZE, ROW_SIZE } from './pathFindingUtil';
 import { MATRIX_MARKER } from '../../common/enums';
 
 class PathFindingStore {
-  gridSubject = new BehaviorSubject<number[][]>(
-    new Array(MATRIX_SIZE)
-      .fill(MATRIX_MARKER.PATH)
-      .map(() => new Array(MATRIX_SIZE).fill(MATRIX_MARKER.PATH))
+  gridSubject = new BehaviorSubject<MATRIX_MARKER[][]>(
+    new Array(ROW_SIZE)
+      .fill(MATRIX_MARKER.PATH1)
+      .map(() => new Array(COLUMN_SIZE).fill(MATRIX_MARKER.PATH1))
   );
 }
 

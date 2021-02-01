@@ -4,12 +4,14 @@ export enum SORTER_ALGORITHM {
   INSERTION_SORT,
   MERGE_SORT,
   QUICK_SORT,
-  HEAP_SORT
+  HEAP_SORT,
 }
 
 export enum MATRIX_MARKER {
-  START,
-  PATH,
-  WALL,
-  END,
+  START = 'start',
+  PATH1 = 'path1',
+  PATH2 = 'path2',
+  PATH3 = 'path3',
+  WALL = 'wall',
+  END = 'end',
 }
